@@ -35,9 +35,9 @@ public class ProducteDAO {
             pstmt.setInt(1, id);
             int files = pstmt.executeUpdate();
             if (files > 0) {
-                System.out.println("🗑️ Producte amb id " + id + " eliminat correctament!");
+                System.out.println("Producte amb id " + id + " eliminat correctament!");
             } else {
-                System.out.println("⚠️ No s'ha trobat cap producte amb id " + id);
+                System.out.println("No s'ha trobat cap producte amb id " + id);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -53,9 +53,9 @@ public class ProducteDAO {
             pstmt.setInt(2, id);
             int files = pstmt.executeUpdate();
             if (files > 0) {
-                System.out.println("💰 Preu del producte amb id " + id + " actualitzat a " + nouPreu + " €");
+                System.out.println("Preu del producte amb id " + id + " actualitzat a " + nouPreu + " €");
             } else {
-                System.out.println("⚠️ No s'ha trobat cap producte amb id " + id);
+                System.out.println("No s'ha trobat cap producte amb id " + id);
             }
         } catch (SQLException e) {
             e.printStackTrace();
