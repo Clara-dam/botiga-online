@@ -12,7 +12,7 @@ import java.sql.Timestamp;
  */
 public class Comanda {
     private int id;
-    private int client_id;
+    public int client_id;
     private Timestamp data;
     private double total;
 
