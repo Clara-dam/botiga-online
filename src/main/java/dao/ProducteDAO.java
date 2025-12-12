@@ -15,8 +15,7 @@ public class ProducteDAO {
     // Afegir producte
     public static void afegirProducte(String nom, double preu, int estoc) {
         String sql = "INSERT INTO Producte (nom, preu, estoc) VALUES (?, ?, ?)";
-        try (Connection conn = Connexio.getConnection(); 
-            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Connexio.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, nom);
             pstmt.setDouble(2, preu);
             pstmt.setInt(3, estoc);
@@ -30,8 +29,7 @@ public class ProducteDAO {
     // Eliminar producte per ID
     public static void eliminarProducte(int id) {
         String sql = "DELETE FROM Producte WHERE id = ?";
-        try (Connection conn = Connexio.getConnection(); 
-            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Connexio.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, id);
             int files = pstmt.executeUpdate();
             if (files > 0) {
@@ -47,8 +45,7 @@ public class ProducteDAO {
     // Actualitzar preu per ID
     public static void actualitzarPreu(int id, double nouPreu) {
         String sql = "UPDATE Producte SET preu = ? WHERE id = ?";
-        try (Connection conn = Connexio.getConnection(); 
-            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Connexio.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setDouble(1, nouPreu);
             pstmt.setInt(2, id);
             int files = pstmt.executeUpdate();
@@ -65,9 +62,7 @@ public class ProducteDAO {
     // Llistar productes
     public static void llistarProductes() {
         String sql = "SELECT * FROM Producte";
-        try (Connection conn = Connexio.getConnection(); 
-            Statement stmt = conn.createStatement(); 
-            ResultSet rs = stmt.executeQuery(sql)) {
+        try (Connection conn = Connexio.getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 System.out.printf("%d - %s (%.2f €) Estoc: %d%n",
                         rs.getInt("id"),
@@ -79,6 +74,19 @@ public class ProducteDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static double getPreu(int id) {
+        String sql = "SELECT preu FROM Producte WHERE id = ?";
+        try (Connection conn = Connexio.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getDouble("preu");
+            }
+        } catch (SQLException ex) {
+        }
+        return 0;
     }
     /* Exemple d’ús
     public static void main(String[] args) {

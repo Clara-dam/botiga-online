@@ -4,9 +4,16 @@
 package com.mycompany.botiga.online;
 
 import dao.ClientDAO;
+import dao.ComandaDAO;
 import dao.DescompteDAO;
 import dao.ProducteDAO;
+import java.sql.Connection;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import model.Comanda;
+import model.LiniaComanda;
 import util.Connexio;
 
 /**
@@ -17,7 +24,7 @@ public class BotigaOnline {
 
     public static void main(String[] args) {
         // Mètode per mostrat missatge de Benvinguda quan es connecta correctament a la BD, o missatge d'error.
-        Connexio.testConnexio();
+        //Connexio.testConnexio();
 
         Scanner sc = new Scanner(System.in);
         int opcio;
@@ -40,9 +47,11 @@ public class BotigaOnline {
                     break;
                 case 3: // Gestionar Descomptes
                     gestionarDescomptes(sc);
-                case 4: // Crear Comanda (pendiente implementación)
+                case 4: // Crear Comanda
+                    crearComandaMenu();
                     break;
-                case 5: // Llistar Comandes (pendiente implementación)
+                case 5: // Llistar Comandes
+                    llistarComandesPerClient(sc);
                     break;
                 case 0: // Sortir
                     System.out.println("Adéu!");
@@ -199,5 +208,68 @@ public class BotigaOnline {
                     System.out.println("Opció no vàlida.");
             }
         } while (opcioDescompte != 5);
+    }
+
+    public static void crearComandaMenu() {
+        Scanner sc = new Scanner(System.in);
+        ComandaDAO cdao = new ComandaDAO();
+
+        System.out.print("ID del client: ");
+        int clientId = sc.nextInt();
+
+        List<LiniaComanda> linies = new ArrayList<>();
+
+        char mes;
+        do {
+            System.out.print("ID producte: ");
+            int prodId = sc.nextInt();
+            System.out.print("Quantitat: ");
+            int quant = sc.nextInt();
+
+            // Aquí consultaries preu del producte
+            double preu = ProducteDAO.getPreu(prodId);
+
+            linies.add(new LiniaComanda(prodId, quant, preu));
+
+            System.out.print("Afegir més productes? (s/n): ");
+            mes = sc.next().charAt(0);
+
+        } while (mes == 's' || mes == 'S');
+
+        Comanda comanda = new Comanda(clientId, new Timestamp(System.currentTimeMillis()));
+
+        boolean ok = cdao.crearComanda(comanda, linies);
+
+        if (ok) {
+            System.out.println("Comanda creada correctament!");
+        } else {
+            System.out.println("ERROR al crear comanda.");
+        }
+    }
+
+    private static void llistarComandesPerClient(Scanner sc) {
+        System.out.print("ID del client: ");
+        int clientId = sc.nextInt();
+        sc.nextLine();
+
+        ComandaDAO comandaDAO = new ComandaDAO();
+        List<Comanda> comandes = comandaDAO.getComandesByClient(clientId);
+
+        if (comandes.isEmpty()) {
+            System.out.println("Aquest client no té comandes.");
+        } else {
+            System.out.println("\n=== COMANDES DEL CLIENT " + clientId + " ===");
+            for (Comanda c : comandes) {
+                System.out.printf("\nComanda %d | Data: %s | Total BD: %.2f€\n",
+                        c.getId(), c.getData(), c.getTotal());
+
+                for (LiniaComanda linia : c.getLinies()) {
+                    System.out.println(linia);
+                }
+
+                System.out.printf("Total recomputat (amb descomptes): %.2f€\n",
+                        c.calcularTotalFinal());
+            }
+        }
     }
 }
