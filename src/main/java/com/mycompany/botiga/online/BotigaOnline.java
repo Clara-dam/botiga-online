@@ -72,7 +72,7 @@ public class BotigaOnline {
             System.out.println("2. Eliminar Producte");
             System.out.println("3. Actualitzar Preu Producte");
             System.out.println("4. Llistar Productes");
-            System.out.println("5. Enrere");
+            System.out.println("0. Enrere");
             System.out.print("Opció: ");
             opcioProducte = sc.nextInt();
 
@@ -101,13 +101,13 @@ public class BotigaOnline {
                 case 4: // Llistar productes
                     ProducteDAO.llistarProductes();
                     break;
-                case 5: // Tornar enrere
+                case 0: // Tornar enrere
                     System.out.println("Tornant enrere...");
                     break;
                 default:
                     System.out.println("Opció no vàlida.");
             }
-        } while (opcioProducte != 5);
+        } while (opcioProducte != 0);
     }
 
     // Submenú de gestionar clients
@@ -119,7 +119,7 @@ public class BotigaOnline {
             System.out.println("2. Eliminar Client");
             System.out.println("3. Actualitzar Dades Client");
             System.out.println("4. Llistar Clients");
-            System.out.println("5. Enrere");
+            System.out.println("0. Enrere");
             System.out.print("Opció: ");
             opcioClient = sc.nextInt();
 
@@ -148,13 +148,13 @@ public class BotigaOnline {
                 case 4: // Llistar clients
                     ClientDAO.llistarClients();
                     break;
-                case 5: // Tornar enrere
+                case 0: // Tornar enrere
                     System.out.println("Tornant enrere...");
                     break;
                 default:
                     System.out.println("Opció no vàlida.");
             }
-        } while (opcioClient != 5);
+        } while (opcioClient != 0);
     }
 
 // Submenú para gestionar descomptes
@@ -166,7 +166,7 @@ public class BotigaOnline {
             System.out.println("2. Eliminar Descompte");
             System.out.println("3. Actualitzar Descompte");
             System.out.println("4. Llistar Descomptes");
-            System.out.println("5. Enrere");
+            System.out.println("0. Enrere");
             System.out.print("Opció: ");
             opcioDescompte = sc.nextInt();
 
@@ -207,7 +207,7 @@ public class BotigaOnline {
                 default:
                     System.out.println("Opció no vàlida.");
             }
-        } while (opcioDescompte != 5);
+        } while (opcioDescompte != 0);
     }
 
     public static void crearComandaMenu() {
